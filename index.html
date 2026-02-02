@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Valentine ❤️</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* General Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffe6fa 0%, #ffc0cb 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Floating Hearts Background Animation */
+        .heart-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            bottom: -50px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 2rem;
+            animation: floatUp 6s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Main Card Container */
+        .container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 77, 109, 0.2);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            z-index: 10;
+            border: 2px solid white;
+            transition: transform 0.3s ease;
+        }
+
+        /* Image Styling */
+        .gif-container img {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            border-radius: 15px;
+            /* Drop shadow for better contrast */
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+            transition: all 0.3s ease;
+        }
+
+        /* Text Styling */
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            color: #ff4d6d;
+            font-size: 3.5rem; /* Large romantic text */
+            margin: 15px 0 5px 0;
+            line-height: 1.2;
+        }
+
+        p {
+            color: #888;
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+        }
+
+        /* Button Area */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap; 
+            min-height: 80px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+
+        #yesBtn {
+            background-color: #ff4d6d;
+            color: white;
+            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+        }
+
+        #yesBtn:hover {
+            background-color: #ff2a55;
+            transform: scale(1.1);
+            box-shadow: 0 15px 35px rgba(255, 77, 109, 0.5);
+        }
+
+        #noBtn {
+            background-color: #f1f1f1;
+            color: #555;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Hidden Class */
+        .hidden { display: none; }
+        
+    </style>
+</head>
+<body>
+
+    <div class="heart-bg" id="heartBg"></div>
+
+    <div class="container">
+        <div class="gif-container">
+            <img id="mainImage" src="https://media.tenor.com/nWZbKqBw3qQAAAAi/flowers-giving.gif" alt="Cute Bear">
+        </div>
+
+        <h1 id="mainText">Will you be my Valentine?</h1>
+        <p id="subText">I promise to love you forever! 🌹</p>
+
+        <div class="btn-container">
+            <button id="yesBtn" onclick="handleYes()">Yes ❤️</button>
+            <button id="noBtn" onclick="handleNo()">No</button>
+        </div>
+    </div>
+
+    <script>
+        const mainImage = document.getElementById('mainImage');
+        const mainText = document.getElementById('mainText');
+        const subText = document.getElementById('subText');
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const heartBg = document.getElementById('heartBg');
+
+        let clickCount = 0;
+
+        // Reliable Tenor Links (Milk and Mocha Bears)
+        const images = [
+            "https://media.tenor.com/nWZbKqBw3qQAAAAi/flowers-giving.gif", // 0: Start (Flower)
+            "https://media.tenor.com/83uI6o-aXqgAAAAi/angry-bear.gif",     // 1: Angry/Shocked
+            "https://media.tenor.com/J3Z3dD7sW-0AAAAi/sad-cry.gif",         // 2: Crying
+            "https://media.tenor.com/w1U6tViT0soAAAAi/sad-bear.gif",        // 3: Giving up
+            "https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif" // 4: Success (Kissing)
+        ];
+
+        const texts = [
+            "No",
+            "Are you sure?",
+            "Really sure?",
+            "Think again!",
+            "Last chance!",
+            "Surely not?",
+            "You might regret this!",
+            "Give it another thought!",
+            "Are you absolutely certain?",
+            "This could be a mistake!",
+            "Have a heart!",
+            "Don't be so cold!",
+            "Change of heart?",
+            "Wouldn't you reconsider?",
+            "Is that your final answer?",
+            "You're breaking my heart ;(",
+            "Is that your final answer?",
+            "You're breaking my heart ;(",
+            "Plsss? :( You're breaking my heart ;("
+        ];
+
+        function handleNo() {
+            clickCount++;
+            
+            // 1. Make Yes button bigger (exponential growth to force the click)
+            const currentSize = 1.2 + (clickCount * 1.2); 
+            yesBtn.style.fontSize = `${currentSize}rem`;
+            yesBtn.style.padding = `${15 + (clickCount * 5)}px ${40 + (clickCount * 10)}px`;
+
+            // 2. Move No button or Shrink it
+            // We shrink it and add text
+            noBtn.innerText = texts[Math.min(clickCount, texts.length - 1)];
+            
+            // 3. Update Image based on anger level
+            if (clickCount === 1) {
+                mainImage.src = images[1]; // Angry/Shocked
+                mainText.innerText = "Are you sure?";
+                subText.innerText = "Don't break my heart! 💔";
+            } else if (clickCount === 3) {
+                mainImage.src = images[2]; // Crying
+                mainText.innerText = "Please pookie!";
+                subText.innerText = "I'm literally crying right now... 😭";
+            } else if (clickCount === 5) {
+                mainImage.src = images[3]; // Giving up
+                mainText.innerText = "Pretty please?";
+                subText.innerText = "I'll buy you chocolate... 🍫";
+            }
+
+            // 4. Hide No button eventually
+            if (clickCount > 7) {
+                noBtn.style.display = "none";
+            }
+        }
+
+        function handleYes() {
+            // Success State
+            document.querySelector('.btn-container').style.display = 'none'; 
+            mainText.innerText = "YAYYY! I Love You! ❤️";
+            subText.innerText = "Best Valentine Ever!";
+            mainImage.src = images[4]; // Kissing GIF
+            
+            // Intensify Heart Background
+            createIntenseHearts();
+        }
+
+        // Initialize Floating Hearts in Background
+        function createHearts() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            
+            // Randomize size and animation duration
+            const duration = Math.random() * 3 + 4; // between 4 and 7 seconds
+            const size = Math.random() * 1.5 + 0.5; // between 0.5rem and 2rem
+            
+            heart.style.animationDuration = duration + 's';
+            heart.style.fontSize = size + 'rem';
+            
+            heartBg.appendChild(heart);
+
+            // Remove heart after animation
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        // Create a new heart every 300ms
+        setInterval(createHearts, 300);
+
+        function createIntenseHearts() {
+            setInterval(() => {
+                createHearts();
+                createHearts();
+                createHearts();
+            }, 100); // Create 3x more hearts much faster
+        }
+    </script>
+</body>
+</html>
+
